@@ -4,6 +4,10 @@ namespace MulloJosue_LigaPro.Repositories
 {
     public class EquipoRepository
     {
+        public IEnumerable<Equipo> Equipos;
+        public EquipoRepository() {
+            Equipos = DevuelveListadoEquipos();
+        }
         public IEnumerable<Equipo> DevuelveListadoEquipos()
         {
             List<Equipo> equipos = new List<Equipo>();
@@ -16,5 +20,22 @@ namespace MulloJosue_LigaPro.Repositories
             equipos.Add(new Equipo { Id = 7, Nombre = "Mushuc Runa", PartidosJugados = 10, PartidosGanados = 1, PartidosPerdidos = 7, PartidosEmpatados = 2 });
             return equipos;
         }
+
+        public Equipo DevuelveEquipoPorId(int Id)
+        {
+            var equipos = DevuelveListadoEquipos();
+            var equipo = Equipos.First(e => e.Id == Id);
+
+
+            return equipo;
+        }
+
+        public bool ActualizarEquipo(int Id, Equipo equipo)
+        {
+            //logica de actualizar
+
+            return true;
+        }
+
     }
 }
