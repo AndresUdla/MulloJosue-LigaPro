@@ -13,6 +13,14 @@ namespace MulloJosue_LigaPro.Controllers
             _repository = new EquipoRepository();
         }
 
+        public IActionResult Info()
+        {
+            var equipos = _repository.DevuelveListadoEquipos();
+            return View(equipos);
+        }
+
+
+
         public ActionResult View()
         {
             return View();

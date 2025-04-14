@@ -1,0 +1,25 @@
+﻿@model IEnumerable<MulloJosue_LigaPro.Models.Equipo>
+
+
+<h1 class="text-center">Información de Equipo</h1>
+
+<p class="text-center">Haga clic en el escudo del equipo para ver su información detallada.</p>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row text-center">
+        @foreach (var equipo in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <a asp-controller="Equipo" asp-action="Details" asp-route-id="@equipo.Id">
+                    <img src="@equipo.LogoPath" alt="Logo de @equipo.Nombre" class="img-fluid" style="max-height: 150px;" />
+                </a>
+                <p class="mt-2"><strong>@equipo.Nombre</strong></p>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No hay equipos disponibles.</p>
+}
