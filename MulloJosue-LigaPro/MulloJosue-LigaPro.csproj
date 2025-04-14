@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\imgs\" />
+    <Folder Include="wwwroot\imgs\logos-equipos\" />
   </ItemGroup>
 
 </Project>

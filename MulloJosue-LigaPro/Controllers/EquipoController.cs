@@ -20,45 +20,62 @@ namespace MulloJosue_LigaPro.Controllers
 
         public ActionResult List()
         {
-            var equipos = _repository.DevuelveListadoEquipos();
-            equipos = equipos.OrderByDescending(e => e.PartidosGanados).ToList();
-
+            var equipos = _repository.DevuelveListadoEquipos()
+                                      .OrderByDescending(e => e.PartidosGanados)
+                                      .ToList();
             return View(equipos);
         }
+
 
         public ActionResult Create()
         {
             return View();
         }
 
+        public IActionResult Details(int id)
+        {
+            var equipo = _repository.DevuelveListadoEquipos().FirstOrDefault(e => e.Id == id);
+            if (equipo == null)
+            {
+                return NotFound();
+            }
+            return View(equipo);
+        }
 
 
         public ActionResult Edit(int Id)
         {
-     
             Equipo equipo = _repository.DevuelveEquipoPorId(Id);
-
-            
             return View(equipo);
         }
+        [HttpPost]
+        public JsonResult Update([FromBody] Equipo equipo)
+        {
+            var actualizado = _repository.ActualizarEquipo(equipo.Id, equipo);
+            if (actualizado)
+            {
+                return Json(new { success = true, message = "Equipo actualizado correctamente." });
+            }
+            return Json(new { success = false, message = "No se pudo actualizar el equipo." });
+        }
+
+
+
+
 
         [HttpPost]
         public ActionResult Edit(int Id, Equipo equipo)
         {
             try
             {
-                //Proceso de guardar
-                
+                // Proceso de guardar  
                 _repository.ActualizarEquipo(Id, equipo);
                 return RedirectToAction(nameof(List));
-                
             }
             catch
             {
                 return View();
             }
         }
-
-
     }
 }

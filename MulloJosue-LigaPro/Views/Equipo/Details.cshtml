@@ -1,0 +1,83 @@
+﻿@model MulloJosue_LigaPro.Models.Equipo
+
+@{
+    ViewData["Title"] = "Detalles del Equipo";
+}
+
+<h1>Detalles del Equipo</h1>
+
+<div>
+    <h2>@Model.Nombre</h2>
+    <img src="@Model.LogoPath" alt="Logo de @Model.Nombre" style="max-width: 200px;" />
+    <p><strong>Descripción:</strong> @Model.Descripcion</p>
+</div>
+
+<form id="formEquipo">
+    <input type="hidden" id="Id" value="@Model.Id" />
+    <div class="mb-3">
+        <label for="partidosJugados" class="form-label">Partidos Jugados</label>
+        <input type="number" id="partidosJugados" class="form-control" value="@Model.PartidosJugados" />
+    </div>
+    <div class="mb-3">
+        <label for="partidosGanados" class="form-label">Partidos Ganados</label>
+        <input type="number" id="partidosGanados" class="form-control" value="@Model.PartidosGanados" />
+    </div>
+    <div class="mb-3">
+        <label for="partidosEmpatados" class="form-label">Partidos Empatados</label>
+        <input type="number" id="partidosEmpatados" class="form-control" value="@Model.PartidosEmpatados" />
+    </div>
+    <div class="mb-3">
+        <label for="partidosPerdidos" class="form-label">Partidos Perdidos</label>
+        <input type="number" id="partidosPerdidos" class="form-control" value="@Model.PartidosPerdidos" />
+    </div>
+    <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-success" onclick="actualizarEquipo()">Actualizar</button>
+        <a asp-action="List" class="btn btn-secondary">Volver</a>
+    </div>
+</form>
+
+<div id="resultado" class="mt-3"></div>
+
+<script>
+        function actualizarEquipo() {
+        const id = $('#Id').val();
+        const partidosJugados = parseInt($('#partidosJugados').val()) || 0;
+        const partidosGanados = parseInt($('#partidosGanados').val()) || 0;
+        const partidosEmpatados = parseInt($('#partidosEmpatados').val()) || 0;
+        const partidosPerdidos = parseInt($('#partidosPerdidos').val()) || 0;
+
+        const equipo = {
+            Id: id,
+            PartidosJugados: partidosJugados,
+            PartidosGanados: partidosGanados,
+            PartidosEmpatados: partidosEmpatados,
+            PartidosPerdidos: partidosPerdidos
+        };
+
+        // Mostrar el mensaje de puntos
+        const puntos = (partidosGanados * 3) + partidosEmpatados;
+        $('#resultado').html(`<p class="alert alert-info">El equipo tiene <strong>${puntos}</strong> puntos.</p>`);
+
+        // Enviar los datos al servidor
+        $.ajax({
+            url: '/Equipo/Update',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(equipo),
+            success: function (response) {
+                if (response.success) {
+                    alert(response.message);
+                    window.location.href = '/Equipo/List'; // Redirige a la tabla de equipos
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function () {
+                alert('Ocurrió un error al actualizar el equipo.');
+            }
+        });
+    }
+
+
+
+</script>
